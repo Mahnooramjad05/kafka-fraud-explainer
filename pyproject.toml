@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kafka-fraud-explainer"
+version = "0.1.0"
+description = "Real-time fraud detection on Kafka: ML risk scoring per transaction and LLM explanations for the flagged ones."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+authors = [{ name = "Mahnoor Amjad" }]
+dependencies = [
+    "aiokafka>=0.11",
+    "scikit-learn>=1.4",
+    "numpy>=1.26",
+    "pydantic>=2.6",
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
+]
+
+[project.optional-dependencies]
+llm = ["openai>=1.40", "anthropic>=1.0"]
+dev = ["pytest>=8", "pytest-asyncio>=0.23", "httpx>=0.27"]
+
+[tool.setuptools.packages.find]
+include = ["fraud_explainer*", "eval*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = ["kafka: needs a running Kafka broker (KAFKA_BOOTSTRAP_SERVERS, default 127.0.0.1:9092)"]
